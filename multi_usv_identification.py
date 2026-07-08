@@ -577,7 +577,7 @@ def make_all_figures(raw, norm, theta, X_list, y_list, n_list,
         legend_elements.append(Line2D([0], [0], color=color_list[i], linestyle='--',
                                       linewidth=1.2, label=f'{BOAT_NAMES[i]} simulated'))
     fB.legend(handles=legend_elements, loc='upper center', bbox_to_anchor=(0.5, 0.84),
-              ncol=3, fontsize=8, frameon=False)
+              ncol=3, fontsize=10, frameon=False)
 
     fB.tight_layout(); figs.append(fB)
 
