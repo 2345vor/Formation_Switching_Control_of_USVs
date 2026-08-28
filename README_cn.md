@@ -1,6 +1,6 @@
 # Formation_Switching_Control_of_USVs
 
-Formation Switching Control of USVs: Identification and NMPC
+A Practical Data-Driven Framework for Multi-USV Formation Switching Control: Design and Experimental Validation
 
 Demo video: [Formation Switching Control of USVs](https://youtu.be/CU5vH-Tl3m8)
 
@@ -130,7 +130,7 @@ pip install numpy pandas matplotlib scipy scikit-learn seaborn openpyxl
 @ARTICLE{Fan2026muti,
   author={Fan, Yunsheng and Liu, Peng and Fugao, Duan and Sun, Xiaojie and Xiaoning, zhang and An, Quan},
   journal={Control Engineering Practice},
-  title={Multi-USV Model Identification and Formation Switching Control: Design and Experiments},
+  title={A Practical Data-Driven Framework for Multi-USV Formation Switching Control: Design and Experimental Validation},
   year={2026},
 }
 ```
