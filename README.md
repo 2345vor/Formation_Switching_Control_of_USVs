@@ -129,7 +129,7 @@ If you use this code, please cite:
 ```
 @ARTICLE{Fan2026muti,
   author={Fan, Yunsheng and Liu, Peng and Fugao, Duan and Sun, Xiaojie and Xiaoning, zhang and An, Quan},
-  journal={IEEE Internet of Things Journal},
+  journal={Control Engineering Practice},
   title={Multi-USV Model Identification and Formation Switching Control: Design and Experiments},
   year={2026},
 }
