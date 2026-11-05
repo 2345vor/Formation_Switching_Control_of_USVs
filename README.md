@@ -2,7 +2,7 @@
 
 A Practical Data-Driven Framework for Multi-USV Formation Switching Control: Design and Experimental Validation
 
-Demo video: [Formation Switching Control of USVs](https://youtu.be/CU5vH-Tl3m8)
+Demo video (latest): [Formation Switching Control of USVs — Indoor Towing Tank Experiments](https://www.youtube.com/watch?v=DAyNJNGOOjk)
 
 [中文版](README_cn.md)
 
@@ -18,15 +18,15 @@ This project contains experimental data of three Unmanned Surface Vehicles (USVs
 
 Each Excel file contains the following columns:
 
-| Column  | Description          | Unit |
-| ------- | -------------------- | ---- |
-| x       | x-axis position      | m    |
-| y       | y-axis position      | m    |
-| Heading | Heading angle        | deg  |
-| u       | Surge velocity       | m/s  |
-| v       | Sway velocity        | m/s  |
-| PWM_L   | Left thruster PWM    | -    |
-| PWM_R   | Right thruster PWM   | -    |
+| Column  | Description        | Unit |
+| ------- | ------------------ | ---- |
+| x       | x-axis position    | m    |
+| y       | y-axis position    | m    |
+| Heading | Heading angle      | deg  |
+| u       | Surge velocity     | m/s  |
+| v       | Sway velocity      | m/s  |
+| PWM_L   | Left thruster PWM  | -    |
+| PWM_R   | Right thruster PWM | -    |
 
 ### Data Sampling Parameters
 
@@ -88,17 +88,17 @@ python multi_usv_identification.py
    - Identified model parameter equations
 2. **Visualization Plots**
 
-   | Figure | Description |
-   |--------|-------------|
-   | ![Figure 1](fig/Figure_1.png) | **Trajectory Tracking Comparison** - Measured vs simulated trajectories of three USVs |
+   | Figure                        | Description                                                                                                             |
+   | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+   | ![Figure 1](fig/Figure_1.png) | **Trajectory Tracking Comparison** - Measured vs simulated trajectories of three USVs                             |
    | ![Figure 2](fig/Figure_2.png) | **State Variables Comparison** - Time series of surge velocity u, sway velocity v, angular rate r, and heading ψ |
-   | ![Figure 3](fig/Figure_3.png) | **Measured Trajectories of Three USVs** |
-   | ![Figure 4](fig/Figure_4.png) | **3-Fold Cross-Validation Parameter Heatmaps** - Identified model parameters for all three folds |
-   | ![Figure 5](fig/Figure_5.png) | **Fold 1 Parameter Heatmap** - Model parameters trained on USV2+USV3 and tested on USV1 |
-   | ![Figure 6](fig/Figure_6.png) | **Regression Error Analysis (5 folds)** |
-   | ![Figure 7](fig/Figure_7.png) | **Regression Error Analysis (3 folds)** |
-
+   | ![Figure 3](fig/Figure_3.png) | **Measured Trajectories of Three USVs**                                                                           |
+   | ![Figure 4](fig/Figure_4.png) | **3-Fold Cross-Validation Parameter Heatmaps** - Identified model parameters for all three folds                  |
+   | ![Figure 5](fig/Figure_5.png) | **Fold 1 Parameter Heatmap** - Model parameters trained on USV2+USV3 and tested on USV1                           |
+   | ![Figure 6](fig/Figure_6.png) | **Regression Error Analysis (5 folds)**                                                                           |
+   | ![Figure 7](fig/Figure_7.png) | **Regression Error Analysis (3 folds)**                                                                           |
 3. **Experimental Results Summary**
+
    - Best model: Trained on USV2+USV3 → Tested on USV1, Overall Score = 0.614
    - All three folds converged successfully, demonstrating good model generalization capability
 
@@ -121,6 +121,25 @@ PWM_CENTER = 1500.0              # PWM center value
 ```bash
 pip install numpy pandas matplotlib scipy scikit-learn seaborn openpyxl
 ```
+
+## Source Code Structure
+
+| Path                            | Description                                                                                                                                                                                                                                                      |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `multi_usv_identification.py` | Core identification script: pooled SLSQP with physical constraints, leave-one-USV-out cross-validation, and ablation study (Individual OLS / Individual SLSQP / Pooled OLS / Pooled SLSQP).                                                                      |
+| `data/usv{1,2,3}_data.xlsx`   | Raw experimental data from three twin-propeller USVs (position, heading, velocities, PWM commands).                                                                                                                                                              |
+| `esp32c3_boat/`               | Onboard firmware (Seeed Xiao ESP32-C3, PlatformIO/Arduino). Receives UDP thruster commands from the upper computer, supports OTA updates, and implements both single-propeller and twin-propeller modes. See `esp32c3_boat/README.md` for pinout and protocol. |
+| `fig/`                        | Identification result figures (trajectory comparison, state variables, parameter heatmaps, regression error analysis).                                                                                                                                           |
+
+> **Note:** The shared-model NMPC controller, the PID/Backstepping baselines, and the Wi-Fi/UDP real-time control loop run on the upper computer and are released together with the experimental data in the paper's supplementary repository.
+
+## Experimental Platform
+
+- **Vessels:** Three 0.2\,m 3D-printed twin-propeller electric USVs.
+- **Facility:** Indoor towing tank, 2\,m × 4\,m.
+- **Localization:** Optical motion-capture system (VRPN) at 100\,Hz, downsampled to the 10\,Hz control rate.
+- **Communication:** Wi-Fi / UDP between the upper computer and each USV.
+- **Formation switching:** Triangle → line transition with linear interpolation over $N_{\text{trans}}=50$ steps.
 
 ## Citation
 

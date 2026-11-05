@@ -218,3 +218,22 @@ __marimo__/
 .streamlit/secrets.toml
 
 multi_usv_identification.zip
+multi_usv_identification_no_norm.py
+# Supplementary / temporary analysis scripts (not part of the core release)
+day2_*.py
+day2_*.json
+
+
+# Jupyter notebooks
+*.ipynb
+
+# Compiled Python objects
+__pycache__/
+*.pyc
+
+# Excel temporary files
+~$*.xlsx
+
+# OS files
+.DS_Store
+Thumbs.db

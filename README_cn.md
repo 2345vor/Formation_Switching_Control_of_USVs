@@ -2,7 +2,7 @@
 
 A Practical Data-Driven Framework for Multi-USV Formation Switching Control: Design and Experimental Validation
 
-Demo video: [Formation Switching Control of USVs](https://youtu.be/CU5vH-Tl3m8)
+演示视频（最新）：[无人船编队切换控制 — 室内水池实验](https://www.youtube.com/watch?v=DAyNJNGOOjk)
 
 [English Version](README.md)
 
@@ -88,17 +88,17 @@ python multi_usv_identification.py
    - 识别出的模型参数方程
 2. **可视化图表**
 
-   | 图片 | 说明 |
-   |-----|-----|
-   | ![Figure 1](fig/Figure_1.png) | **轨迹跟踪对比** - 三艘 USV 的实测与仿真轨迹对比 |
+   | 图片                          | 说明                                                                               |
+   | ----------------------------- | ---------------------------------------------------------------------------------- |
+   | ![Figure 1](fig/Figure_1.png) | **轨迹跟踪对比** - 三艘 USV 的实测与仿真轨迹对比                             |
    | ![Figure 2](fig/Figure_2.png) | **状态变量对比** - 纵向速度 u、横向速度 v、角速度 r 和航向角 ψ 随时间的变化 |
-   | ![Figure 3](fig/Figure_3.png) | **三艘 USV 实测轨迹** |
-   | ![Figure 4](fig/Figure_4.png) | **三折交叉验证参数热力图** - 三个 Fold 识别出的模型参数 |
-   | ![Figure 5](fig/Figure_5.png) | **Fold 1 参数热力图** - USV2+USV3 训练、USV1 测试的模型参数 |
-   | ![Figure 6](fig/Figure_6.png) | **回归误差分析（5折）** |
-   | ![Figure 7](fig/Figure_7.png) | **回归误差分析（3折）** |
-
+   | ![Figure 3](fig/Figure_3.png) | **三艘 USV 实测轨迹**                                                        |
+   | ![Figure 4](fig/Figure_4.png) | **三折交叉验证参数热力图** - 三个 Fold 识别出的模型参数                      |
+   | ![Figure 5](fig/Figure_5.png) | **Fold 1 参数热力图** - USV2+USV3 训练、USV1 测试的模型参数                  |
+   | ![Figure 6](fig/Figure_6.png) | **回归误差分析（5折）**                                                      |
+   | ![Figure 7](fig/Figure_7.png) | **回归误差分析（3折）**                                                      |
 3. **实验结果总结**
+
    - 最佳模型：USV2+USV3 训练 → USV1 测试，综合 Score = 0.614
    - 三折交叉验证均收敛，模型泛化能力良好
 
@@ -121,6 +121,25 @@ PWM_CENTER = 1500.0              # PWM 中心值
 ```bash
 pip install numpy pandas matplotlib scipy scikit-learn seaborn openpyxl
 ```
+
+## 源码结构
+
+| 路径                            | 说明                                                                                                                                                                         |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `multi_usv_identification.py` | 核心识别脚本：带物理约束的 pooled SLSQP、留一艇交叉验证，以及消融实验（Individual OLS / Individual SLSQP / Pooled OLS / Pooled SLSQP）。                                     |
+| `data/usv{1,2,3}_data.xlsx`   | 三艘双桨无人船的原始实验数据（位置、航向、速度、PWM 指令）。                                                                                                                 |
+| `esp32c3_boat/`               | 下位机固件（Seeed Xiao ESP32-C3，PlatformIO/Arduino）。通过 UDP 接收上位机推进器指令，支持 OTA 升级，兼容单桨和双桨模式。引脚定义与通信协议详见 `esp32c3_boat/README.md`。 |
+| `fig/`                        | 识别结果图（轨迹对比、状态变量、参数热力图、回归误差分析）。                                                                                                                 |
+
+> **说明：** 共享模型 NMPC 控制器、PID/反步控制基线以及 Wi-Fi/UDP 实时控制循环运行于上位机，随论文实验数据一同发布于补充仓库。
+
+## 实验平台
+
+- **艇体：** 三艘 0.2\,m 3D 打印双桨电动无人船。
+- **设施：** 室内拖曳水池，2\,m × 4\,m。
+- **定位：** 光学动作捕捉系统（VRPN）100\,Hz，降采样至 10\,Hz 控制频率。
+- **通信：** 上位机与各艇之间通过 Wi-Fi / UDP。
+- **编队切换：** 三角形 → 一字形，线性插值过渡 $N_{\text{trans}}=50$ 步。
 
 ## 引用
 
